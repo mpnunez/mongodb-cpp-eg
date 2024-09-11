@@ -32,7 +32,18 @@ int main()
     client_options.server_api_opts(api);
     // Setup the connection and get a handle on the "admin" database.
     mongocxx::client conn{ uri, client_options };
-    mongocxx::database db = conn["admin"];
+    mongocxx::database db = conn["sample_mflix"];
+
+    auto collection = db["movies"];
+    auto cursor_all = collection.find(bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("title", "A Corner in Wheat")));
+    std::cout << "collection " << collection.name()
+            << " contains these documents:" << std::endl;
+    for (auto doc : cursor_all) {
+        std::cout << bsoncxx::to_json(doc, bsoncxx::ExtendedJsonMode::k_relaxed) << std::endl;
+    }
+    std::cout << std::endl;
+
+
     // Ping the database.
     const auto ping_cmd = bsoncxx::builder::basic::make_document(bsoncxx::builder::basic::kvp("ping", 1));
     db.run_command(ping_cmd.view());

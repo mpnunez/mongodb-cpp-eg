@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(mongocxx REQUIRED)
 
-add_executable(cmongodb src/main.cpp)
+add_executable(cmongodb main.cpp)
 
 target_link_libraries(cmongodb mongo::mongocxx_static)
